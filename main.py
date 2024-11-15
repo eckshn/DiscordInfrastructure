@@ -178,10 +178,11 @@ def linux():
             channel_1 = channel_1
         # Step 4: Type 'UMD-Relay'
         pyautogui.typewrite("{} {}".format(channel, server_name))
+        time.sleep(2)
 
         # Step 5: Press Enter
         pyautogui.press('enter')
-
+        time.sleep(2)
         first = not first
 
 def mac_experiment():
