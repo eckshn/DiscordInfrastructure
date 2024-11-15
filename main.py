@@ -175,7 +175,7 @@ def linux():
         pyautogui.hotkey('ctrl', 'k')
         channel = channel_2
         if first:
-            channel_1 = channel_1
+            channel = channel_1
         # Step 4: Type 'UMD-Relay'
         time.sleep(2)
         pyautogui.typewrite("{} {}".format(channel, server_name))
