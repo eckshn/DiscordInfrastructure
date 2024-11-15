@@ -164,7 +164,7 @@ def process_pcap_analysis(cap: pyshark.FileCapture, destinations: Counter, i, ou
 
 def linux():
     # Step 1: Open Discord
-    subprocess.Popen(['discord', '&'])
+    subprocess.Popen(['discord', '--no-sandbox', '&'])
 
     # Step 2: Wait for Discord to start (~20 seconds)
     time.sleep(20)
