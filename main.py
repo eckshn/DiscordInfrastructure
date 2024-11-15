@@ -184,6 +184,14 @@ def linux():
         # Step 5: Press Enter
         pyautogui.press('enter')
         time.sleep(2)
+
+         # Step 6: Start packet collection
+        capture_pcap(i, './pcap_files')
+
+        # Step 7: Analyze packet
+        cap, destination = analyze_pcapng(i, './pcap_files')
+        process_pcap_analysis(cap, destination, i, './pcap_files', False, 0)
+
         first = not first
 
 def mac_experiment():
