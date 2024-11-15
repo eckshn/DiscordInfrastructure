@@ -167,19 +167,23 @@ def linux():
     subprocess.Popen(['discord', '&'])
 
     # Step 2: Wait for Discord to start (~20 seconds)
-    time.sleep(5)
+    time.sleep(20)
 
-    # Step 3: Press CTRL + K
-    pyautogui.hotkey('ctrl', 'k')
+    first = True
+    for i in range(2):
+        # Step 3: Press CTRL + K
+        pyautogui.hotkey('ctrl', 'k')
+        channel = channel_2
+        if first:
+            channel_1 = channel_1
+        # Step 4: Type 'UMD-Relay'
+        pyautogui.typewrite("{} {}".format(channel, server_name))
 
-    # Step 4: Type 'UMD-Relay'
-    pyautogui.typewrite('UMD-Relay')
+        # Step 5: Press Enter
+        pyautogui.press('enter')
 
-    # Step 5: Press Enter
-    pyautogui.press('enter')
+        first = not first
 
-    # Step 6: Press CTRL + '
-    pyautogui.hotkey('ctrl', "'")
 def mac_experiment():
     shutil.copy(path_to_pf, "/etc/backup_pf.conf")
     # capture_pcap()
@@ -215,4 +219,4 @@ def mac_experiment():
         
         first = not first
 
-mac_experiment()
+linux()
