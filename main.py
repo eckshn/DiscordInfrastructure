@@ -52,7 +52,7 @@ def capture_pcap(n, output='./pcap_files'):
     os.makedirs(output, exist_ok=True)
 
     # Define the command to run tcpdump
-    command = ['sudo', 'tcpdump', '-w', os.path.join(output, f'{n}.pcapng')]
+    command = ['sudo', 'tcpdump', 'net', '66.22.0.0/16', '-w', os.path.join(output, f'{n}.pcapng')]
 
     try:
         # Start the tcpdump process
