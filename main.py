@@ -13,6 +13,7 @@ channel_2 = "connection_2"
 server_name = "Livestream"
 path_to_pf = "/etc/pf.conf"
 global_timings = {}
+is_mac = False
 
 def reload_pf(path):
     try:
@@ -32,7 +33,7 @@ def append_to_file(file_path, text):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def block_ip(ip):
+def block_ip(ip, is_mac):
     """Block outbound UDP traffic to ip
 
     Arguments:
@@ -43,9 +44,9 @@ def block_ip(ip):
     # print(f"Blocking IP {ip} now")
     # cmd = f'netsh advfirewall firewall add rule name="{rule}" dir=out action=block remoteip="{ip}" protocol=UDP'
     # os.system(cmd)
-
-    append_to_file(f"{path_to_pf}", f"block drop quick on en0 proto udp to {ip}")
-    reload_pf(path_to_pf)
+    if is_mac:
+        append_to_file(f"{path_to_pf}", f"block drop quick on en0 proto udp to {ip}")
+        reload_pf(path_to_pf)
     return
 
 def capture_pcap(n, output='./pcap_files'):
@@ -57,12 +58,13 @@ def capture_pcap(n, output='./pcap_files'):
     try:
         # Start the tcpdump process
         process = subprocess.Popen(command)
-        
+        print('running tcpdump')
         # Wait for 5 seconds
         time.sleep(5)
         
         # Stop the tcpdump process
         process.terminate()
+        print('ended')
         process.wait()  # Ensure the process has terminated
         print("Capture completed and saved to capture.pcap.")
         
