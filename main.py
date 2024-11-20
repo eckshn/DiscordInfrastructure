@@ -59,23 +59,32 @@ def capture_pcap(n, output='./pcap_files'):
     try:
         # Start the tcpdump process
         process = subprocess.Popen(command)
-        print('running tcpdump')
         # Wait for 5 seconds
         time.sleep(5)
         
         # Stop the tcpdump process
         if is_mac:
             process.terminate()
-        process.send_signal(signal.SIGINT)
-        process.terminate()
+            process.wait()
+        
+        os.killpg(os.getpgid(process.pid), signal.SIGINT)
+        process.wait()
+
+       # process.send_signal(signal.SIGINT)
+        #process.terminate()
         print('ended')
-        process.wait()  # Ensure the process has terminated
+        #process.wait()  # Ensure the process has terminated
         print("Capture completed and saved to capture.pcap.")
         
     except subprocess.CalledProcessError as e:
         print(f"Error while running tcpdump: {e}")
     except KeyboardInterrupt:
         print("Capture stopped by user.")
+    finally:
+        if process.poll() is None:
+            # Ensure the process is terminated if it didn't stop
+            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+            print("Forcefully killed tcpdump.")
 
 def analyze_pcapng(n, output, tshark_path=None):
     """Open the pcap file for processing
