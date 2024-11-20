@@ -55,6 +55,7 @@ def capture_pcap(n, output='./pcap_files'):
 
     # Define the command to run tcpdump
     command = ['timeout', '--signal=SIGKILL', '10', 'sudo', 'tcpdump', 'net', '66.22.0.0/16', '-w', os.path.join(output, f'{n}.pcapng')]
+    print('writing to: ', os.path.join(output, f'{n}.pcapng'))
 
     try:
         # Start the tcpdump process
