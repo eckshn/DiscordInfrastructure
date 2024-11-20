@@ -185,7 +185,7 @@ def linux(output_path):
     time.sleep(20)
 
     first = True
-    for i in range(4):
+    for i in range(100):
         # Step 3: Press CTRL + K
         pyautogui.hotkey('ctrl', 'k')
         channel = channel_2
