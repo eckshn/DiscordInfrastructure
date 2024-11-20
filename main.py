@@ -7,7 +7,7 @@ import shutil
 from datetime import timezone
 from collections import Counter
 import datetime
-import signal
+import sys
 
 channel_1 = "connection_1"
 channel_2 = "connection_2"
@@ -239,4 +239,7 @@ def mac_experiment():
         
         first = not first
 
-linux()
+if __name__ == "__main__":
+    version = sys.argv[1]
+    print(version)
+    linux()
