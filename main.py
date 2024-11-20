@@ -7,6 +7,7 @@ import shutil
 from datetime import timezone
 from collections import Counter
 import datetime
+import signal
 
 channel_1 = "connection_1"
 channel_2 = "connection_2"
@@ -33,7 +34,7 @@ def append_to_file(file_path, text):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def block_ip(ip, is_mac):
+def block_ip(ip):
     """Block outbound UDP traffic to ip
 
     Arguments:
@@ -63,7 +64,10 @@ def capture_pcap(n, output='./pcap_files'):
         time.sleep(5)
         
         # Stop the tcpdump process
-        process.terminate()
+        if is_mac:
+            process.terminate()
+        else:
+            process.send_signal(signal.SIGINT)
         print('ended')
         process.wait()  # Ensure the process has terminated
         print("Capture completed and saved to capture.pcap.")
