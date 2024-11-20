@@ -131,22 +131,20 @@ def process_pcap_analysis(cap: pyshark.FileCapture, destinations: Counter, i, ou
     try:
         
         for packet in cap:
-            print('iterating through packet...')
             if found_first == 0:
                 found_first = float(packet.sniff_timestamp) # THE VERY FIRST PACKET
             if 0 == found_tcp and 'TCP' in packet and ".".join(packet.ip.dst.split(".")[:2]) in ["66.22"]: # ["206.247","144.195","134.224"]:
                 found_tcp = float(packet.sniff_timestamp)
             if 'IP' in packet and "UDP" in packet:
                 # Media exchange packets have length 1044 so they're easy to fingerprint
-                if packet.udp.length >= "20":
-                    if 0 == found_udp:
-                        found_udp = float(packet.sniff_timestamp)
-                    dst = packet.ip.dst
-                    dst = ".".join(packet.ip.dst.split(".")[:2])
-                    
-                    # Look at the known Zoom IP prefixes
-                    if dst == "66.22": # dst == "206.247" or dst == "144.195" or dst == "134.224":
-                        destinations[packet.ip.dst] += 1
+                if 0 == found_udp:
+                    found_udp = float(packet.sniff_timestamp)
+                dst = packet.ip.dst
+                dst = ".".join(packet.ip.dst.split(".")[:2])
+                
+                # Look at the known Zoom IP prefixes
+                if dst == "66.22": # dst == "206.247" or dst == "144.195" or dst == "134.224":
+                    destinations[packet.ip.dst] += 1
     
         if destinations:
 
@@ -172,7 +170,8 @@ def process_pcap_analysis(cap: pyshark.FileCapture, destinations: Counter, i, ou
         else:
             f = open(os.path.join(output,"results.csv"), "a")
             print("\n No destination IP found, please check the pcapng file")
-            print(f"{i+1},{datetime.datetime.now()},{i}.pcapng,0,{global_timings[i]},{datetime.datetime.fromtimestamp(found_first,timezone.utc)},{datetime.datetime.fromtimestamp(found_tcp,timezone.utc)},{datetime.datetime.fromtimestamp(found_udp,timezone.utc)}", file=f)
+            # print(f"{i+1},{datetime.datetime.now()},{i+1}.pcapng,0,{global_timings[i]},{datetime.datetime.fromtimestamp(found_first,timezone.utc)},{datetime.datetime.fromtimestamp(found_tcp,timezone.utc)},{datetime.datetime.fromtimestamp(found_udp,timezone.utc)}", file=f)
+            print(f"{i+1},{datetime.datetime.now()},{i}.pcapng,0,{datetime.datetime.fromtimestamp(found_first,timezone.utc)},{datetime.datetime.fromtimestamp(found_tcp,timezone.utc)},{datetime.datetime.fromtimestamp(found_udp,timezone.utc)}", file=f)
             f.close()
             return None
     except Exception as e:
