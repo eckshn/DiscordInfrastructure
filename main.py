@@ -66,8 +66,8 @@ def capture_pcap(n, output='./pcap_files'):
         # Stop the tcpdump process
         if is_mac:
             process.terminate()
-        else:
-            process.send_signal(signal.SIGINT)
+        process.send_signal(signal.SIGINT)
+        process.terminate()
         print('ended')
         process.wait()  # Ensure the process has terminated
         print("Capture completed and saved to capture.pcap.")
