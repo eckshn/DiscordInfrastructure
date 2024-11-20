@@ -54,24 +54,26 @@ def capture_pcap(n, output='./pcap_files'):
     os.makedirs(output, exist_ok=True)
 
     # Define the command to run tcpdump
-    command = ['sudo', 'tcpdump', 'net', '66.22.0.0/16', '-w', os.path.join(output, f'{n}.pcapng')]
+    command = ['timeout', '5', 'sudo', 'tcpdump', 'net', '66.22.0.0/16', '-w', os.path.join(output, f'{n}.pcapng')]
 
     try:
         # Start the tcpdump process
         process = subprocess.Popen(command)
-        # Wait for 5 seconds
-        time.sleep(5)
+        # # Wait for 5 seconds
+        # time.sleep(5)
         
-        # Stop the tcpdump process
-        if is_mac:
-            process.terminate()
-            process.wait()
+        # # Stop the tcpdump process
+        # if is_mac:
+        #     process.terminate()
+        #     process.wait()
         
-        os.killpg(os.getpgid(process.pid), signal.SIGINT)
-        process.wait()
+        # # os.killpg(os.getpgid(process.pid), signal.SIGINT)
+        # process.terminate()
+        # process.wait()
 
        # process.send_signal(signal.SIGINT)
         #process.terminate()
+        process.wait()
         print('ended')
         #process.wait()  # Ensure the process has terminated
         print("Capture completed and saved to capture.pcap.")
