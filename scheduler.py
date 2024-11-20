@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 script_path = './main.py'
 
-def run_experiment_script():
+def run_experiment_script(output_dir):
     try:
-        subprocess.run(['python3', script_path], check=True)
+        subprocess.run(['python3', script_path, 'linux', output_dir], check=True)
         print(f"Successfully ran {script_path}")
     except subprocess.CalledProcessError as e:
         print(f"Script {script_path} failed with error: {e}")
@@ -28,7 +28,7 @@ def get_next_run_time():
 
 def schedule_script():
     for i in range(12):
-        run_experiment_script()
+        run_experiment_script(f"./pcap_files/{i}_test")
         next_run = get_next_run_time()
         time_to_wait = (next_run - datetime.now()).total_seconds()
         print(f"Next run scheduled for: {next_run}")

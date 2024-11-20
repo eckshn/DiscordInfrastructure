@@ -48,6 +48,11 @@ def block_ip(ip):
     if is_mac:
         append_to_file(f"{path_to_pf}", f"block drop quick on en0 proto udp to {ip}")
         reload_pf(path_to_pf)
+    else:
+        command = ['sudo', 'ufw', 'deny', 'in', 'from', ip, 'proto', 'udp']
+        subprocess.run(command, check=True)
+        print(f"Successfully blocked incoming UDP traffic from {ip}")
+
     return
 
 def capture_pcap(n, output='./pcap_files'):
@@ -172,7 +177,7 @@ def process_pcap_analysis(cap: pyshark.FileCapture, destinations: Counter, i, ou
     finally:
         cap.close()
 
-def linux():
+def linux(output_path):
     # Step 1: Open Discord
     subprocess.Popen(['discord', '--no-sandbox', '&'])
 
@@ -196,11 +201,11 @@ def linux():
         time.sleep(2)
 
          # Step 6: Start packet collection
-        capture_pcap(i, './pcap_files')
+        capture_pcap(i, output_path)
 
         # Step 7: Analyze packet
-        cap, destination = analyze_pcapng(i, './pcap_files')
-        process_pcap_analysis(cap, destination, i, './pcap_files', False, 0)
+        cap, destination = analyze_pcapng(i, output_path)
+        process_pcap_analysis(cap, destination, i, output_path, True, 0)
 
         first = not first
 
@@ -241,5 +246,6 @@ def mac_experiment():
 
 if __name__ == "__main__":
     version = sys.argv[1]
-    print(version)
-    linux()
+    output_path = sys.argv[2]
+    if version == "linux":
+        linux(output_path)
