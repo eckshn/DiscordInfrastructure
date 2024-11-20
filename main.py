@@ -55,7 +55,6 @@ def capture_pcap(n, output='./pcap_files'):
 
     # Define the command to run tcpdump
     command = ['timeout', '--signal=SIGKILL', '10', 'sudo', 'tcpdump', 'net', '66.22.0.0/16', '-w', os.path.join(output, f'{n}.pcapng')]
-    print('writing to: ', os.path.join(output, f'{n}.pcapng'))
 
     try:
         # Start the tcpdump process
@@ -74,20 +73,13 @@ def capture_pcap(n, output='./pcap_files'):
 
        # process.send_signal(signal.SIGINT)
         #process.terminate()
-        process.wait()
-        print('ended')
-        #process.wait()  # Ensure the process has terminated
-        print("Capture completed and saved to capture.pcap.")
+        process.wait()  # Ensure the process has terminated
+        print("Capture completed")
         
     except subprocess.CalledProcessError as e:
         print(f"Error while running tcpdump: {e}")
     except KeyboardInterrupt:
         print("Capture stopped by user.")
-    finally:
-        if process.poll() is None:
-            # Ensure the process is terminated if it didn't stop
-            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
-            print("Forcefully killed tcpdump.")
 
 def analyze_pcapng(n, output, tshark_path=None):
     """Open the pcap file for processing
@@ -188,7 +180,7 @@ def linux():
     time.sleep(20)
 
     first = True
-    for i in range(2):
+    for i in range(4):
         # Step 3: Press CTRL + K
         pyautogui.hotkey('ctrl', 'k')
         channel = channel_2
