@@ -31,9 +31,10 @@ def get_next_run_time():
     return next_run
 
 def schedule_script():
-    for i in range(12):
+    for i in range(10):
         try:
             subprocess.run(['sudo', 'ufw', '--force', 'reset'], check=True)
+            subprocess.run(['sudo', 'ufw', 'enable'], check=True)
             print(f"Successfully reset ufw")
         except subprocess.CalledProcessError as e:
             print(f"Script {script_path} failed with error: {e}")

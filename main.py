@@ -52,6 +52,8 @@ def block_ip(ip):
     else:
         command = ['sudo', 'ufw', 'deny', 'in', 'from', ip, 'proto', 'udp']
         subprocess.run(command, check=True)
+        command = ['sudo', 'ufw', 'deny', 'out', 'to', ip, 'proto', 'udp']
+        subprocess.run(command, check=True)
         print(f"Successfully blocked incoming UDP traffic from {ip}")
 
     return
