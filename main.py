@@ -9,9 +9,9 @@ from collections import Counter
 import datetime
 import sys
 
-channel_1 = "connection_1"
-channel_2 = "connection_2"
-server_name = "Livestream"
+channel_1 = "channel_1"
+channel_2 = "channel_2"
+server_name = "Relay_Server_1"
 path_to_pf = "/etc/pf.conf"
 global_timings = {}
 blocking_status = "blocking"
@@ -227,7 +227,7 @@ def linux(output_path):
     subprocess.Popen(['discord', '--no-sandbox', '&'])
 
     # Step 2: Wait for Discord to start (~20 seconds)
-    time.sleep(20)
+    time.sleep(10)
 
     first = True
     for i in range(200):
