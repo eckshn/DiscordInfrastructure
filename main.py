@@ -237,6 +237,7 @@ def linux(output_path):
         if first:
             channel = channel_1
         # Step 4: Type 'UMD-Relay'
+        process = start_pcap(i, output_path)
         time.sleep(2)
         pyautogui.typewrite("{} {}".format(channel, server_name))
         time.sleep(2)
@@ -246,7 +247,8 @@ def linux(output_path):
         time.sleep(2)
 
          # Step 6: Start packet collection
-        capture_pcap(i, output_path)
+        # capture_pcap(i, output_path)
+        stop_pcap(process)
 
         # Step 7: Analyze packet
         cap, destination = analyze_pcapng(i, output_path)
