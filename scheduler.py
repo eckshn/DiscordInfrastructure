@@ -50,6 +50,7 @@ def schedule_script():
         # Run every 45 minutes
         print('running')
         # time.sleep(45 * 60)  # Sleep until the next run time
+    subprocess.run(['sudo', 'ufw', '--force', 'reset'], check=True)
 
 if __name__ == "__main__":
     version = sys.argv[1]
