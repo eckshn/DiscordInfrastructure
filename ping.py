@@ -73,6 +73,6 @@ def process_csv(file_path, output_path):
         print(f"Error processing file: {e}")
 
 # Example usage
-input_csv = './pcap_files/9_test/results.csv'  # Replace with your input CSV file path
-output_csv = 'output10.csv'  # Replace with your desired output CSV file path
+input_csv = './pcap_files/0_test/results.csv'  # Replace with your input CSV file path
+output_csv = 'output.csv'  # Replace with your desired output CSV file path
 process_csv(input_csv, output_csv)
