@@ -10,7 +10,7 @@ def ping_ip(ip):
     try:
         # Run the ping command (5 packets)
         result = subprocess.run(
-            ['ping', '-c', '5', ip],
+            ['ping', '-c', '1', ip],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
@@ -44,12 +44,14 @@ def process_csv(file_path, output_path):
             writer = csv.writer(outfile)
 
             # Read header and append new column for ping results
-            header = next(reader)
-            writer.writerow(header + ['Ping Time (ms)'])
+            # header = next(reader)
+            # writer.writerow(header + ['Ping Time (ms)'])
 
             for row in reader:
-                if len(row) < 8:
+                if len(row) < 9:
                     # Did not find an IP
+                    print("skipping...")
+                    writer.writerow(row + ['NO IP TO PING'])
                     continue
                 ip = row[-1]  # Last column contains the IP address
                 print(f"Pinging {ip}...")
@@ -71,6 +73,6 @@ def process_csv(file_path, output_path):
         print(f"Error processing file: {e}")
 
 # Example usage
-input_csv = './pcap_files/block_1/results.csv'  # Replace with your input CSV file path
-output_csv = 'output.csv'  # Replace with your desired output CSV file path
+input_csv = './pcap_files/9_test/results.csv'  # Replace with your input CSV file path
+output_csv = 'output10.csv'  # Replace with your desired output CSV file path
 process_csv(input_csv, output_csv)

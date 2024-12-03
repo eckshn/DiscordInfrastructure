@@ -163,7 +163,7 @@ def process_pcap_analysis(cap: pyshark.FileCapture, destinations: Counter, i, ou
         for packet in cap:
             if found_first == 0:
                 found_first = float(packet.sniff_timestamp) # THE VERY FIRST PACKET
-            if 'TLS' in packet:
+            if not discord_media_time and 'TLS' in packet:
                 if hasattr(packet.tls, 'handshake_extensions_server_name'):
                     sni = packet.tls.handshake_extensions_server_name
                     # Check if '.discord.media' is in the SNI
